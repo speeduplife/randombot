@@ -14,13 +14,14 @@ def newWordWrite(mes) -> str:
     with open("words.txt", "a", encoding='utf-8') as wordsf:
         messagewrite = mes + "\n"
         wordsf.writelines(messagewrite)
+
 def newPhotoWrite(photo) -> str:
     with open("photos.txt", "a", encoding='utf-8') as photosf:
         photowrite = photo + "\n"
         photosf.writelines(photowrite)
 
 @bot.message_handler(bot.text_contains_filter(["сколько слов знаешь", "сколько знаешь слов", "сколько ты знаешь слов", "Сколько знаешь слов", "Сколько ты знаешь слов", "Сколько слов знаешь"]))
-async def words(event: SimpleBotEvent) -> str:
+async def wordsCount(event: SimpleBotEvent) -> str:
         with open('words.txt', "r", encoding='utf-8') as f:
             words_array = str([row.strip() for row in f])
             words_array = words_array.split()
@@ -30,19 +31,19 @@ async def words(event: SimpleBotEvent) -> str:
 
 
 @bot.message_handler(bot.event_type_filter("message_new"))
-async def randomWords(event: SimpleBotEvent) -> str:
+async def randomPhrase(event: SimpleBotEvent) -> str:
         message = event.text
-        random_int = randint(1, 8)
+        random_int = randint(1, 1)
         if event.object.object.message.attachments == []:
             print("RANDOM:", random_int)
-            intxtbool = False
+            newword = False
 
             with open('words.txt', "r", encoding='utf-8') as file:
                 for line in file:
                     if message in line:
-                        intxtbool = True
+                        newword = True
 
-            if intxtbool == False:
+            if newword == False:
                 user = event.user_id
                 if user == 616474186:
                     print("ADMIN MESSAGE")
@@ -53,15 +54,19 @@ async def randomWords(event: SimpleBotEvent) -> str:
 
             if random_int == 1:
                 with open('words.txt', "r", encoding='utf-8') as f:
-                    words_array_rig = str([row.strip() for row in f])
-                    words_array = words_array_rig.split()
-                    count_words_in_words_array = len(words_array)
-                    random_word_1 = randint(1, count_words_in_words_array)
-                    random_word_2 = randint(1, count_words_in_words_array)
-                    random_word_3 = randint(1, count_words_in_words_array)
-                    user = event.user_id
-                    answerphrase = words_array[random_word_1] + " " + words_array[random_word_2] + " " + words_array[random_word_3]
-                    answerphrase = re.sub(r'(id|1|2|3|4|5|6|7|8|9|0|,|\||\[|\]|\(|\)|\')', '', answerphrase)
+                    i = 1
+                    answerphrase = " "
+                    random = randint(1, 10)
+                    print(random)
+                    while i < random:
+                        with open('words.txt', "r", encoding='utf-8') as f:
+                            words_array_rig = str([row.strip() for row in f])
+                            words_array = words_array_rig.split()
+                            count_words_in_words_array = len(words_array)
+                            random_word = randint(1, count_words_in_words_array)
+                            answerphrase = answerphrase + " " + words_array[random_word]
+                            answerphrase = re.sub(r'(id|1|2|3|4|5|6|7|8|9|0|,|\||\[|\]|\(|\)|\')', '', answerphrase)
+                            i = i + 1
                     print("PHRASE:", answerphrase)           
                     await event.answer(answerphrase.casefold())
 
@@ -80,6 +85,9 @@ async def randomWords(event: SimpleBotEvent) -> str:
 
 
                 with open('words.txt', "r", encoding='utf-8') as f:
+                    random = randint(1, 20)
+                    for x in range(random):
+                        print(x)
                     words_array_rig = str([row.strip() for row in f])
                     words_array = words_array_rig.split()
                     count_words_in_words_array = len(words_array)

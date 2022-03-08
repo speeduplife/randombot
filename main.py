@@ -3,7 +3,6 @@ from vkwave.bots import SimpleLongPollBot, SimpleBotEvent
 from vkwave.bots.utils.uploaders import PhotoUploader
 from vkwave.bots.core.dispatching import filters
 from random import randint
-import random
 import re
 
 
@@ -33,7 +32,7 @@ async def wordsCount(event: SimpleBotEvent) -> str:
 @bot.message_handler(bot.event_type_filter("message_new"))
 async def randomPhrase(event: SimpleBotEvent) -> str:
         message = event.text
-        random_int = randint(1, 1)
+        random_int = randint(1, 20)
         if event.object.object.message.attachments == []:
             print("RANDOM:", random_int)
             newword = False
@@ -44,18 +43,14 @@ async def randomPhrase(event: SimpleBotEvent) -> str:
                         newword = True
 
             if newword == False:
-                user = event.user_id
-                if user == 616474186:
-                    print("ADMIN MESSAGE")
-                else:
-                    message = event.text
-                    newWordWrite(message)
-                    print("NEW:", message)
+                message = event.text
+                newWordWrite(message)
+                print("NEW:", message)
 
             if random_int == 1:
                 with open('words.txt', "r", encoding='utf-8') as f:
                     i = 1
-                    answerphrase = " "
+                    answerphrase = ""
                     random = randint(1, 10)
                     print(random)
                     while i < random:
@@ -86,8 +81,6 @@ async def randomPhrase(event: SimpleBotEvent) -> str:
 
                 with open('words.txt', "r", encoding='utf-8') as f:
                     random = randint(1, 20)
-                    for x in range(random):
-                        print(x)
                     words_array_rig = str([row.strip() for row in f])
                     words_array = words_array_rig.split()
                     count_words_in_words_array = len(words_array)
@@ -103,5 +96,6 @@ async def randomPhrase(event: SimpleBotEvent) -> str:
         else:
             photo_url = event.object.object.message.attachments[0].photo.sizes[-1].url
             newPhotoWrite(photo_url)
+
 
 bot.run_forever()
